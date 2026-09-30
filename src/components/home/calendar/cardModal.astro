@@ -1,0 +1,129 @@
+<dialog
+  id="event_modal"
+  class="modal m-0 border-0 bg-transparent p-0 outline-none focus:border-0 focus:outline-none"
+  aria-labelledby="modal_title"
+  aria-describedby="modal_description"
+>
+  <div
+    class="modal-box relative m-0 max-w-lg overflow-hidden rounded-xs border border-primary/60 bg-base-200 p-0 outline-none shadow-[0_0_30px_rgba(232,194,34,0.3)] focus:border-0 focus:outline-none"
+  >
+    <span
+      class="pointer-events-none absolute top-0 left-0 z-30 size-3 border-t-2 border-l-2 border-primary"
+      aria-hidden="true"></span>
+    <span
+      class="pointer-events-none absolute top-0 right-0 z-30 size-3 border-t-2 border-r-2 border-secondary"
+      aria-hidden="true"></span>
+    <span
+      class="pointer-events-none absolute bottom-0 left-0 z-30 size-3 border-b-2 border-l-2 border-secondary"
+      aria-hidden="true"></span>
+    <span
+      class="pointer-events-none absolute bottom-0 right-0 z-30 size-3 border-b-2 border-r-2 border-primary"
+      aria-hidden="true"></span>
+
+    <figure
+      id="modal_image_container"
+      class="relative m-0 hidden aspect-video w-full border-b border-primary/30 bg-base-300"
+    >
+      <img
+        id="modal_image"
+        src=""
+        alt=""
+        loading="eager"
+        fetchpriority="low"
+        decoding="async"
+        class="size-full object-cover opacity-80"
+      />
+
+      <div
+        class="pointer-events-none absolute inset-0 bg-linear-to-t from-base-200 via-transparent to-transparent"
+        aria-hidden="true"
+      >
+      </div>
+    </figure>
+
+    <div class="space-y-4 p-6">
+      <div
+        class="flex items-center justify-between gap-2 border-b border-primary/20 pb-2"
+      >
+        <span
+          id="modal_type_badge"
+          class="badge badge-neutral rounded-xs border border-secondary px-3 py-2 font-mono text-xs uppercase tracking-widest text-secondary"
+        >
+          Tipo
+        </span>
+
+        <span
+          id="modal_date_time"
+          class="font-mono text-xs font-bold tracking-widest text-primary"
+        >
+          Fecha - Hora
+        </span>
+      </div>
+
+      <div>
+        <h3
+          id="modal_title"
+          class="mb-1 block font-mono text-xl font-extrabold uppercase text-base-content md:text-2xl"
+        >
+          Título del Evento
+        </h3>
+
+        <p
+          id="modal_subtitle"
+          class="mb-3 font-mono text-xs font-semibold uppercase text-secondary"
+        >
+          Subtítulo breve
+        </p>
+
+        <p
+          id="modal_description"
+          class="border-l-2 border-primary bg-base-300/40 p-3 font-mono text-xs leading-relaxed opacity-90 md:text-sm"
+        >
+          Descripción detallada del evento...
+        </p>
+      </div>
+
+      <div
+        class="modal-action flex items-center justify-between border-t border-primary/20 pt-4"
+      >
+        <form method="dialog">
+          <button
+            type="submit"
+            class="group relative inline-flex cursor-pointer items-center gap-2 rounded-xs border border-primary/20 bg-base-100/40 px-4 py-2 font-mono text-xs uppercase tracking-wider outline-none transition-all duration-200 hover:border-error hover:bg-error hover:text-error-content hover:shadow-[0_0_15px_rgba(255,0,85,0.4)] focus:border-primary/20 focus:outline-none"
+          >
+            [CERRAR]
+          </button>
+        </form>
+
+        <a
+          id="modal_platform_link"
+          href=""
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative inline-flex cursor-pointer items-center gap-2 rounded-xs border border-primary/50 bg-base-100/80 px-6 py-2 font-mono text-xs font-bold uppercase tracking-wider text-primary outline-none shadow-[0_0_10px_rgba(232,194,34,0.15)] transition-all duration-300 hover:bg-primary hover:text-base-100 hover:shadow-[0_0_20px_rgba(232,194,34,0.4)] focus:outline-none"
+        >
+          <span
+            class="absolute top-0 left-0 h-1 w-1 border-t border-l border-primary group-hover:border-base-100"
+            aria-hidden="true"></span>
+          <span
+            class="absolute bottom-0 right-0 h-1 w-1 border-b border-r border-primary group-hover:border-base-100"
+            aria-hidden="true"></span>
+          <span>Ir a la plataforma</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <form
+    method="dialog"
+    class="modal-backdrop border-0 bg-base-100/80 outline-none backdrop-blur-xs"
+  >
+    <button
+      type="submit"
+      class="border-0 bg-transparent outline-none focus:border-0 focus:outline-none"
+      aria-label="Cerrar modal"
+    >
+      close
+    </button>
+  </form>
+</dialog>

@@ -1,7 +1,7 @@
 {
   "name": "streamer-website",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -12,7 +12,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.3.2"
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.2",
+    "astro-icon": "^1.2.0",
+    "daisyui": "^5.7.47",
+    "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
     "esbuild": true

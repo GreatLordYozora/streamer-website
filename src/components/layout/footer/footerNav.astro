@@ -1,0 +1,49 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface NavLink {
+  icon?: string;
+  title: string;
+  url: string;
+}
+
+export interface Props {
+  nav: NavLink[];
+  title: string;
+}
+
+const { nav = [], title } = Astro.props;
+---
+
+<nav aria-label={title} class="flex flex-col gap-2 font-mono">
+  <h3
+    class="footer-title font-mono uppercase tracking-wider text-secondary opacity-100"
+  >
+    [ {title} ]
+  </h3>
+
+  {
+    nav.map((item) => (
+      <a
+        href={item.url}
+        class="group flex items-center gap-2 font-mono text-xs opacity-80 transition-all hover:text-primary hover:opacity-100"
+      >
+        {item.icon ? (
+          <Icon
+            name={item.icon}
+            class="size-4 shrink-0 text-primary"
+            aria-hidden="true"
+          />
+        ) : (
+          <span
+            class="text-primary opacity-50 group-hover:opacity-100"
+            aria-hidden="true"
+          >
+            &gt;
+          </span>
+        )}
+        <span>{item.title}</span>
+      </a>
+    ))
+  }
+</nav>

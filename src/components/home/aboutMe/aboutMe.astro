@@ -1,0 +1,166 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
+import { aboutMeData } from "../../../data/home/aboutMeData";
+
+const {
+  aboutMeParagraphs,
+  aboutMeTitle,
+  birthday,
+  fanartTag,
+  image,
+  stats,
+  subtitle,
+  title,
+} = aboutMeData;
+---
+
+<section
+  id="about-me"
+  class="relative w-full overflow-hidden py-12 md:py-16 lg:py-24"
+>
+  <div class="container relative z-10 mx-auto max-w-7xl px-4 md:px-8">
+    <header class="mx-auto mb-10 max-w-2xl text-center md:mb-16">
+      <h2
+        class="mb-3 font-mono text-3xl font-extrabold uppercase tracking-widest text-base-content drop-shadow-[0_0_10px_rgba(232,194,34,0.2)] md:mb-4 md:text-4xl lg:text-5xl"
+      >
+        {title}
+      </h2>
+      <p class="font-mono text-base leading-relaxed opacity-80 md:text-lg">
+        {subtitle}
+      </p>
+    </header>
+
+    <div
+      class="flex flex-col items-center justify-between gap-8 lg:flex-row lg:items-start lg:gap-12"
+    >
+      <div class="flex w-full items-center justify-center lg:w-1/2">
+        <div class="relative w-full max-w-md lg:max-w-lg">
+          <div
+            class="pointer-events-none absolute -inset-2 rounded-xs border border-secondary/30"
+            aria-hidden="true"
+          >
+          </div>
+
+          <figure
+            class="relative aspect-9/11 w-full overflow-hidden rounded-xs border border-primary/50 bg-base-200/80 shadow-[0_0_30px_rgba(232,194,34,0.15)] backdrop-blur-md"
+          >
+            <span
+              class="absolute top-0 left-0 z-20 size-3 border-t-2 border-l-2 border-primary"
+              aria-hidden="true"></span>
+            <span
+              class="absolute top-0 right-0 z-20 size-3 border-t-2 border-r-2 border-secondary"
+              aria-hidden="true"></span>
+            <span
+              class="absolute bottom-0 left-0 z-20 size-3 border-b-2 border-l-2 border-secondary"
+              aria-hidden="true"></span>
+            <span
+              class="absolute bottom-0 right-0 z-20 size-3 border-b-2 border-r-2 border-primary"
+              aria-hidden="true"></span>
+
+            <Image
+              src={image}
+              alt={`Imagen referente a ${aboutMeTitle}`}
+              width={500}
+              height={611}
+              class="h-full w-full object-cover object-center"
+            />
+
+            <div
+              class="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.5)_51%)] bg-size-[100%_4px] opacity-40"
+              aria-hidden="true"
+            >
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <div class="flex w-full flex-col justify-between lg:w-1/2">
+        <h3
+          class="mb-4 border-l-2 border-primary pl-3 text-center font-mono text-2xl font-extrabold uppercase text-base-content md:text-3xl lg:mb-6 lg:border-l-4 lg:pl-4 lg:text-left"
+        >
+          {aboutMeTitle}
+        </h3>
+
+        <div
+          class="mb-6 space-y-4 text-center font-mono text-base leading-relaxed opacity-90 md:mb-8 md:text-lg lg:text-left"
+        >
+          {aboutMeParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+
+        <div
+          class="mb-8 flex flex-wrap justify-center gap-3 md:mb-10 lg:justify-start"
+        >
+          <div
+            class="badge badge-neutral badge-lg group relative gap-2 rounded-xs border border-primary/40 bg-base-100/60 p-4 font-mono text-xs uppercase tracking-wider text-base-content transition-all hover:border-primary"
+          >
+            <span
+              class="absolute top-0 left-0 size-1 border-t border-l border-primary"
+              aria-hidden="true"></span>
+            <span
+              class="absolute bottom-0 right-0 size-1 border-b border-r border-primary"
+              aria-hidden="true"></span>
+            <Icon
+              name="miscellaneous/cake"
+              class="size-4 shrink-0 text-primary"
+              aria-hidden="true"
+            />
+            <span>Birthday: {birthday}</span>
+          </div>
+
+          <div
+            class="badge badge-neutral badge-lg group relative gap-2 rounded-xs border border-secondary/40 bg-base-100/60 p-4 font-mono text-xs uppercase tracking-wider text-base-content transition-all hover:border-secondary"
+          >
+            <span
+              class="absolute top-0 left-0 size-1 border-t border-l border-secondary"
+              aria-hidden="true"></span>
+            <span
+              class="absolute bottom-0 right-0 size-1 border-b border-r border-secondary"
+              aria-hidden="true"></span>
+            <Icon
+              name="miscellaneous/hash"
+              class="size-4 shrink-0 text-secondary"
+              aria-hidden="true"
+            />
+            <span>Fan Art: {fanartTag}</span>
+          </div>
+        </div>
+
+        <div
+          class="relative rounded-xs border border-primary/50 bg-base-200/80 p-1 shadow-[0_0_20px_rgba(232,194,34,0.1)] backdrop-blur-md"
+        >
+          <span
+            class="absolute top-0 left-0 size-2 border-t border-l border-primary"
+            aria-hidden="true"></span>
+          <span
+            class="absolute top-0 right-0 size-2 border-t border-r border-secondary"
+            aria-hidden="true"></span>
+          <span
+            class="absolute bottom-0 left-0 size-2 border-b border-l border-secondary"
+            aria-hidden="true"></span>
+          <span
+            class="absolute bottom-0 right-0 size-2 border-b border-r border-primary"
+            aria-hidden="true"></span>
+
+          <div
+            class="stats stats-vertical sm:stats-horizontal w-full divide-y divide-base-300/60 bg-transparent sm:divide-y-0 sm:divide-x"
+          >
+            {
+              stats.map((stat) => (
+                <div class="stat p-4 text-center">
+                  <div class="stat-value font-mono text-2xl font-extrabold tracking-wider text-primary drop-shadow-[0_0_8px_rgba(232,194,34,0.3)] md:text-4xl">
+                    {stat.value}
+                  </div>
+                  <div class="stat-title mt-1 font-mono text-xs font-bold uppercase tracking-widest opacity-80 md:text-sm">
+                    {stat.title}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,281 @@
+---
+import { Icon } from "astro-icon/components";
+
+import { calendarData, formatEventDate } from "../../../data/home/calendarData";
+import CalendarCard from "./calendarCard.astro";
+import CalendarModal from "./cardModal.astro";
+
+const { events, subtitle, title } = calendarData;
+
+const today = new Date();
+const year = today.getFullYear();
+const month = String(today.getMonth() + 1).padStart(2, "0");
+const day = String(today.getDate()).padStart(2, "0");
+const todayStr = `${year}-${month}-${day}`;
+
+const upcomingEvents = events.filter((evt) => evt.date >= todayStr);
+---
+
+<section class="relative w-full overflow-hidden py-12 md:py-16 lg:py-24">
+  <div class="relative z-10 mx-auto max-w-7xl px-4 md:px-8">
+    <div class="mx-auto mb-10 max-w-2xl text-center md:mb-16">
+      <h2
+        class="mb-3 font-mono text-3xl font-extrabold uppercase tracking-widest text-base-content drop-shadow-[0_0_10px_rgba(232,194,34,0.2)] md:mb-4 md:text-4xl lg:text-5xl"
+      >
+        {title}
+      </h2>
+      <p class="font-mono text-base leading-relaxed opacity-80 md:text-lg">
+        {subtitle}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+      <div
+        class="relative space-y-6 rounded-xs border border-primary/40 bg-base-200/90 p-5 shadow-2xl backdrop-blur-md lg:sticky lg:top-8 lg:col-span-5 md:p-6"
+      >
+        <span
+          class="absolute top-0 left-0 size-2 border-t-2 border-l-2 border-primary"
+          aria-hidden="true"></span>
+        <span
+          class="absolute top-0 right-0 size-2 border-t-2 border-r-2 border-secondary"
+          aria-hidden="true"></span>
+        <span
+          class="absolute bottom-0 left-0 size-2 border-b-2 border-l-2 border-secondary"
+          aria-hidden="true"></span>
+        <span
+          class="absolute bottom-0 right-0 size-2 border-b-2 border-r-2 border-primary"
+          aria-hidden="true"></span>
+
+        <div
+          class="flex items-center justify-between border-b border-primary/20 pb-4"
+        >
+          <button
+            id="prev-month-btn"
+            type="button"
+            class="btn btn-xs rounded-xs border border-primary/30 btn-ghost font-mono text-primary hover:border-primary hover:bg-primary/20 md:btn-sm"
+            aria-label="Mes anterior"
+          >
+            <Icon
+              name="miscellaneous/chevron-left"
+              class="size-4 shrink-0"
+              aria-hidden="true"
+            />
+          </button>
+
+          <h3
+            id="calendar-month-label"
+            class="font-mono text-lg font-bold uppercase tracking-widest text-primary drop-shadow-[0_0_5px_rgba(232,194,34,0.4)] md:text-xl"
+          >
+            MES AÑO
+          </h3>
+
+          <button
+            id="next-month-btn"
+            type="button"
+            class="btn btn-xs rounded-xs border border-primary/30 btn-ghost font-mono text-primary hover:border-primary hover:bg-primary/20 md:btn-sm"
+            aria-label="Mes siguiente"
+          >
+            <Icon
+              name="miscellaneous/chevron-right"
+              class="size-4 shrink-0"
+              aria-hidden="true"
+            />
+          </button>
+        </div>
+
+        <div
+          class="grid grid-cols-7 border-b border-base-300 pb-2 text-center font-mono text-xs font-bold uppercase tracking-wider text-secondary"
+          aria-hidden="true"
+        >
+          <span>Dom</span>
+          <span>Lun</span>
+          <span>Mar</span>
+          <span>Mié</span>
+          <span>Jue</span>
+          <span>Vie</span>
+          <span>Sáb</span>
+        </div>
+
+        <div
+          id="calendar-grid"
+          class="grid grid-cols-7 gap-1.5 text-center font-mono"
+        >
+        </div>
+
+        <details
+          class="collapse collapse-arrow rounded-xs border border-primary/30 bg-base-100/60 transition-colors hover:border-primary"
+        >
+          <summary
+            class="collapse-title flex items-center justify-between px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider text-base-content"
+          >
+            <span>[SYS.LOG] FECHAS DESTACADAS ({upcomingEvents.length})</span>
+          </summary>
+          <div class="collapse-content pt-2">
+            <div class="flex flex-wrap gap-2">
+              {
+                upcomingEvents.length > 0 ? (
+                  upcomingEvents.map((evt) => (
+                    <div class="inline-flex items-center gap-2 rounded-xs border border-primary/40 bg-base-300/80 px-2.5 py-1 font-mono text-[11px]">
+                      <span class="relative flex size-2" aria-hidden="true">
+                        <span class="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-75" />
+                        <span class="relative inline-flex size-2 rounded-full bg-primary" />
+                      </span>
+                      <span class="font-bold text-secondary">
+                        {formatEventDate(evt.date)}:
+                      </span>
+                      <span class="max-w-37.5 truncate">{evt.title}</span>
+                    </div>
+                  ))
+                ) : (
+                  <span class="font-mono text-xs italic opacity-60">
+                    NO HAY PRÓXIMOS EVENTOS REGISTRADOS
+                  </span>
+                )
+              }
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="lg:col-span-7">
+        <div
+          id="events-cards-grid"
+          class="grid grid-cols-1 gap-6 md:grid-cols-2"
+        >
+          {events.map((event) => <CalendarCard event={event} />)}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <CalendarModal />
+</section>
+
+<script is:inline define:vars={{ eventsData: events }}>
+  let currentDate = new Date();
+
+  function renderCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const monthName = currentDate.toLocaleString("es-ES", {
+      month: "long",
+      year: "numeric",
+    });
+    document.getElementById("calendar-month-label").innerText = monthName;
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const lastDay = new Date(year, month + 1, 0).getDate();
+
+    const gridContainer = document.getElementById("calendar-grid");
+    gridContainer.innerHTML = "";
+
+    for (let i = 0; i < firstDayIndex; i++) {
+      const emptyDiv = document.createElement("div");
+      emptyDiv.className = "p-1";
+      emptyDiv.setAttribute("aria-hidden", "true");
+      gridContainer.appendChild(emptyDiv);
+    }
+
+    for (let day = 1; day <= lastDay; day++) {
+      const formattedMonth = String(month + 1).padStart(2, "0");
+      const formattedDay = String(day).padStart(2, "0");
+      const dateString = `${year}-${formattedMonth}-${formattedDay}`;
+
+      const hasEvent = eventsData.some((evt) => evt.date === dateString);
+
+      const dayCell = document.createElement("button");
+      dayCell.type = "button";
+      dayCell.className = `p-1 rounded-xs text-xs font-mono font-semibold transition-all relative flex flex-col items-center justify-center h-9 border ${
+        hasEvent
+          ? "bg-primary/20 border-primary text-primary font-bold shadow-[0_0_10px_rgba(232,194,34,0.3)] hover:bg-primary hover:text-base-100"
+          : "bg-base-100/40 border-base-300/30 opacity-70 hover:border-primary/50 hover:opacity-100"
+      }`;
+
+      dayCell.innerText = day;
+      dayCell.setAttribute("aria-label", `Día ${day} de ${monthName}`);
+
+      if (hasEvent) {
+        const dot = document.createElement("span");
+        dot.className =
+          "size-1.5 rounded-full bg-primary mt-0.5 shadow-[0_0_5px_#e8c222]";
+        dot.setAttribute("aria-hidden", "true");
+        dayCell.appendChild(dot);
+      }
+
+      gridContainer.appendChild(dayCell);
+    }
+
+    filterCardsByMonth(year, month + 1);
+  }
+
+  function filterCardsByMonth(year, month) {
+    const formattedMonth = String(month).padStart(2, "0");
+    const prefix = `${year}-${formattedMonth}`;
+
+    const cards = document.querySelectorAll(".calendar-card-item");
+    cards.forEach((card) => {
+      const cardDate = card.getAttribute("data-event-date");
+      if (cardDate && cardDate.startsWith(prefix)) {
+        card.classList.remove("hidden");
+      } else {
+        card.classList.add("hidden");
+      }
+    });
+  }
+
+  document.getElementById("prev-month-btn").addEventListener("click", () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  });
+
+  document.getElementById("next-month-btn").addEventListener("click", () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  });
+
+  window.openEventModal = function (cardElement) {
+    const title = cardElement.getAttribute("data-event-title");
+    const subtitle = cardElement.getAttribute("data-event-subtitle");
+    const description = cardElement.getAttribute("data-event-description");
+    const dateFormatted = cardElement.getAttribute("data-event-formatted-date");
+    const time = cardElement.getAttribute("data-event-time");
+    const type = cardElement.getAttribute("data-event-type");
+    const image = cardElement.getAttribute("data-event-image");
+    const url = cardElement.getAttribute("data-event-url");
+    const platform = cardElement.getAttribute("data-event-platform");
+
+    document.getElementById("modal_title").innerText = title || "";
+    document.getElementById("modal_subtitle").innerText = subtitle || "";
+    document.getElementById("modal_description").innerText = description || "";
+    document.getElementById("modal_type_badge").innerText = type || "Evento";
+    document.getElementById("modal_date_time").innerText =
+      `${dateFormatted} - ${time}`;
+
+    const modalImgContainer = document.getElementById("modal_image_container");
+    const modalImg = document.getElementById("modal_image");
+    if (image && modalImgContainer && modalImg) {
+      modalImg.src = image;
+      modalImg.alt = title || "Imagen del evento";
+      modalImgContainer.classList.remove("hidden");
+    } else if (modalImgContainer) {
+      modalImgContainer.classList.add("hidden");
+    }
+
+    const platformLink = document.getElementById("modal_platform_link");
+    if (url) {
+      platformLink.href = url;
+      platformLink.innerText = `ACCEDER A ${platform.toUpperCase()}`;
+      platformLink.classList.remove("hidden");
+    } else {
+      platformLink.classList.add("hidden");
+    }
+
+    const modal = document.getElementById("event_modal");
+    if (modal && typeof modal.showModal === "function") {
+      modal.showModal();
+    }
+  };
+
+  renderCalendar();
+</script>

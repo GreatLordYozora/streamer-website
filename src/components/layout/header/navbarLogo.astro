@@ -1,0 +1,33 @@
+---
+import { Image } from "astro:assets";
+
+export interface Props {
+  avatar: ImageMetadata;
+  creator: string;
+}
+
+const { avatar, creator } = Astro.props;
+---
+
+<div class="navbar-start">
+  <a
+    href="/"
+    class="group flex items-center gap-3 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
+    aria-label={`Ir al inicio, ${creator}`}
+  >
+    <div class="relative size-12.5">
+      <Image
+        src={avatar}
+        alt={`Fotografía de perfil de ${creator}`}
+        fetchpriority="high"
+        class="size-12.5 rounded-full object-cover ring-2 ring-primary/60 shadow-[0_0_8px_rgba(232,194,34,0.3)] transition-all duration-300 group-hover:ring-primary"
+      />
+    </div>
+
+    <span
+      class="font-mono text-base font-extrabold tracking-widest text-primary drop-shadow-[0_0_5px_rgba(232,194,34,0.3)] transition-colors group-hover:text-secondary lg:text-lg"
+    >
+      {creator}
+    </span>
+  </a>
+</div>

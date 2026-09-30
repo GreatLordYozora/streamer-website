@@ -1,0 +1,136 @@
+---
+import { Icon } from "astro-icon/components";
+
+import ContactButton from "../../components/contact/contactButton.astro";
+import ContactForm from "../../components/contact/contactForm.astro";
+import { contactData } from "../../data/contact/contactData";
+import BaseLayout from "../../layouts/baseLayout.astro";
+
+const formsList = Object.values(contactData);
+---
+
+<BaseLayout
+  title="Home | Lorem ipsum"
+  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+>
+  <section class="mx-auto max-w-6xl px-4 py-8 font-mono md:py-12">
+    <div class="mb-8 flex justify-start">
+      <a
+        href="/"
+        class="group relative inline-flex items-center gap-3 border border-primary/40 bg-base-200/80 px-5 py-2.5 text-sm uppercase tracking-wider text-primary shadow-[0_0_10px_rgba(232,194,34,0.15)] backdrop-blur-sm transition-all duration-300 rounded-xs hover:border-primary hover:bg-primary hover:text-base-100 hover:shadow-[0_0_20px_rgba(232,194,34,0.4)]"
+      >
+        <span
+          class="absolute top-0 left-0 size-1.5 border-t border-l border-primary group-hover:border-base-100"
+          aria-hidden="true"></span>
+        <span
+          class="absolute bottom-0 right-0 size-1.5 border-b border-r border-primary group-hover:border-base-100"
+          aria-hidden="true"></span>
+
+        <Icon
+          name="miscellaneous/chevron-left"
+          class="size-5 shrink-0 transition-transform group-hover:-translate-x-1"
+          aria-hidden="true"
+        />
+        <span>[ RETURN_TO_HOME ]</span>
+      </a>
+    </div>
+
+    <div
+      class="relative overflow-hidden border border-primary/40 bg-base-200/60 p-6 shadow-[0_0_30px_rgba(0,0,0,0.7)] backdrop-blur-md rounded-xs md:p-10"
+    >
+      <span
+        class="absolute top-0 left-0 z-10 size-3 border-t-2 border-l-2 border-primary"
+        aria-hidden="true"></span>
+      <span
+        class="absolute top-0 right-0 z-10 size-3 border-t-2 border-r-2 border-secondary"
+        aria-hidden="true"></span>
+      <span
+        class="absolute bottom-0 left-0 z-10 size-3 border-b-2 border-l-2 border-secondary"
+        aria-hidden="true"></span>
+      <span
+        class="absolute bottom-0 right-0 z-10 size-3 border-b-2 border-r-2 border-primary"
+        aria-hidden="true"></span>
+
+      <div
+        class="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.3)_51%)] bg-size-[100%_4px] opacity-20"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div
+        class="relative z-10 mb-8 flex flex-col justify-between gap-2 border-b border-primary/20 pb-4 md:flex-row md:items-center"
+      >
+        <div>
+          <div
+            class="mb-1 flex items-center gap-2 text-xs uppercase tracking-widest text-secondary"
+          >
+            <span
+              class="inline-block size-2 animate-pulse bg-secondary"
+              aria-hidden="true"></span>
+            <span>COMMUNICATION_TERMINAL // v2.4</span>
+          </div>
+          <h1
+            class="text-2xl font-extrabold uppercase tracking-wide text-base-content md:text-4xl"
+          >
+            CANALES DE CONTACTO
+          </h1>
+        </div>
+        <div class="hidden text-right text-xs opacity-60 md:block">
+          <span class="font-bold text-primary">SYSTEM_STATUS: ONLINE</span><br
+          />
+          SELECT A PROTOCOL TO INIT
+        </div>
+      </div>
+
+      <div
+        class="relative z-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+      >
+        {
+          formsList.map((item, index) => (
+            <ContactButton
+              id={item.id}
+              title={item.title}
+              description={item.description}
+              icon={item.icon}
+              index={index}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    formsList.map((form) => (
+      <ContactForm
+        id={form.id}
+        title={form.title}
+        description={form.description}
+        fields={form.fields}
+      />
+    ))
+  }
+</BaseLayout>
+
+<script>
+  const checkAndOpenModal = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const formToOpen = urlParams.get("form");
+
+    if (formToOpen) {
+      const targetModal = document.getElementById(
+        `modal_${formToOpen}`,
+      ) as HTMLDialogElement | null;
+
+      if (targetModal && typeof targetModal.showModal === "function") {
+        targetModal.showModal();
+
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", checkAndOpenModal);
+  document.addEventListener("astro:page-load", checkAndOpenModal);
+</script>

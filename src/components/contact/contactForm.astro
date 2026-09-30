@@ -1,0 +1,201 @@
+---
+import { Icon } from "astro-icon/components";
+
+type InputType =
+  | "text"
+  | "email"
+  | "password"
+  | "number"
+  | "tel"
+  | "url"
+  | "date"
+  | "textarea"
+  | "select";
+
+interface Field {
+  name: string;
+  label: string;
+  type: InputType;
+  placeholder?: string;
+  required?: boolean;
+  options?: string[];
+}
+
+interface Props {
+  id: string;
+  title?: string;
+  description: string;
+  fields: Field[];
+}
+
+const { id, title = "Formulario", description, fields } = Astro.props;
+---
+
+<dialog id={`modal_${id}`} class="modal backdrop-blur-md">
+  <div
+    class="modal-box relative flex max-h-[85vh] max-w-xl flex-col overflow-hidden border border-primary/50 bg-base-200 p-6 font-mono shadow-[0_0_40px_rgba(0,0,0,0.9)] rounded-xs md:p-8"
+  >
+    <span
+      class="pointer-events-none absolute top-0 left-0 z-20 size-3 border-t-2 border-l-2 border-primary"
+      aria-hidden="true"></span>
+    <span
+      class="pointer-events-none absolute top-0 right-0 z-20 size-3 border-t-2 border-r-2 border-secondary"
+      aria-hidden="true"></span>
+    <span
+      class="pointer-events-none absolute bottom-0 left-0 z-20 size-3 border-b-2 border-l-2 border-secondary"
+      aria-hidden="true"></span>
+    <span
+      class="pointer-events-none absolute bottom-0 right-0 z-20 size-3 border-b-2 border-r-2 border-primary"
+      aria-hidden="true"></span>
+
+    <div
+      class="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.3)_51%)] bg-size-[100%_4px] opacity-20"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div
+      class="relative z-10 mb-4 flex shrink-0 items-start justify-between border-b border-primary/20 pb-3"
+    >
+      <div>
+        <div class="mb-1 text-[10px] uppercase tracking-widest text-secondary">
+          // TRANSMISSION_MODAL
+        </div>
+        <h3
+          class="text-xl font-bold uppercase tracking-wider text-base-content"
+        >
+          {title}
+        </h3>
+        <p class="mt-1 text-xs leading-relaxed opacity-70">
+          {description}
+        </p>
+      </div>
+
+      <form method="dialog" class="cursor-pointer">
+        <button
+          type="submit"
+          aria-label="Cerrar modal"
+          class="group relative flex cursor-pointer items-center justify-center border border-primary/30 bg-base-100/60 p-1.5 text-primary outline-none transition-all duration-200 rounded-xs hover:border-error hover:bg-error hover:text-error-content focus:outline-none"
+        >
+          <Icon
+            name="miscellaneous/x"
+            class="size-4 shrink-0"
+            aria-hidden="true"
+          />
+        </button>
+      </form>
+    </div>
+
+    <form
+      method="POST"
+      class="custom-scrollbar relative z-10 flex-1 space-y-4 overflow-y-auto pr-2"
+    >
+      {
+        fields.map((field) => {
+          const fieldId = `field_${id}_${field.name}`;
+          return (
+            <div class="form-control w-full">
+              <label for={fieldId} class="label cursor-pointer pb-1">
+                <span class="label-text text-xs font-bold uppercase tracking-wider text-primary">
+                  [ {field.label} ]{" "}
+                  {field.required && (
+                    <span class="text-secondary" aria-hidden="true">
+                      *
+                    </span>
+                  )}
+                </span>
+              </label>
+
+              {field.type === "textarea" ? (
+                <textarea
+                  id={fieldId}
+                  name={field.name}
+                  required={field.required}
+                  placeholder={field.placeholder}
+                  rows={4}
+                  class="textarea w-full resize-none border-primary/30 bg-base-100/90 text-sm text-base-content outline-none placeholder:text-base-content/30 rounded-xs focus:border-primary focus:shadow-[0_0_10px_rgba(232,194,34,0.25)] focus:outline-none"
+                />
+              ) : field.type === "select" ? (
+                <div class="relative w-full">
+                  <select
+                    id={fieldId}
+                    name={field.name}
+                    required={field.required}
+                    class="select w-full cursor-pointer appearance-none border-primary/30 bg-base-100/90 pr-10 text-sm text-base-content outline-none transition-all duration-200 rounded-xs focus:border-primary focus:shadow-[0_0_10px_rgba(232,194,34,0.25)] focus:outline-none"
+                  >
+                    <option
+                      value=""
+                      disabled
+                      selected
+                      class="bg-base-200 text-base-content/40"
+                    >
+                      {field.placeholder || "SELECT_OPTION"}
+                    </option>
+                    {field.options?.map((opt) => (
+                      <option
+                        value={opt}
+                        class="bg-base-200 py-2 font-mono text-base-content"
+                      >
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-primary">
+                    <Icon
+                      name="miscellaneous/chevron-right"
+                      class="size-4 rotate-90 transform"
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <input
+                  id={fieldId}
+                  type={field.type}
+                  id={fieldId}
+                  name={field.name}
+                  required={field.required}
+                  placeholder={field.placeholder}
+                  class="input w-full border-primary/30 bg-base-100/90 text-sm text-base-content outline-none placeholder:text-base-content/30 rounded-xs focus:border-primary focus:shadow-[0_0_10px_rgba(232,194,34,0.25)] focus:outline-none"
+                />
+              )}
+            </div>
+          );
+        })
+      }
+
+      <div
+        class="modal-action sticky bottom-0 flex justify-end gap-3 border-t border-primary/20 bg-base-200/95 py-2 pt-4"
+      >
+        <form method="dialog" class="cursor-pointer">
+          <button
+            type="submit"
+            class="group relative inline-flex cursor-pointer items-center gap-2 border border-primary/20 bg-base-100/40 px-4 py-2 font-mono text-xs uppercase tracking-wider outline-none transition-all duration-200 rounded-xs hover:border-error hover:bg-error hover:text-error-content hover:shadow-[0_0_15px_rgba(255,0,85,0.4)] focus:outline-none"
+          >
+            [ ABORT ]
+          </button>
+        </form>
+
+        <button
+          type="submit"
+          class="group relative inline-flex cursor-pointer items-center gap-2 border border-primary/50 bg-base-100/80 px-6 py-2 font-mono text-xs font-bold uppercase tracking-wider text-primary shadow-[0_0_10px_rgba(232,194,34,0.15)] outline-none transition-all duration-300 rounded-xs hover:bg-primary hover:text-base-100 hover:shadow-[0_0_20px_rgba(232,194,34,0.4)] focus:outline-none"
+        >
+          <span
+            class="absolute top-0 left-0 size-1 border-t border-l border-primary group-hover:border-base-100"
+            aria-hidden="true"></span>
+          <span
+            class="absolute bottom-0 right-0 size-1 border-b border-r border-primary group-hover:border-base-100"
+            aria-hidden="true"></span>
+          <span>[ TRANSMIT_DATA ]</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <form
+    method="dialog"
+    class="modal-backdrop cursor-pointer bg-base-100/80 backdrop-blur-sm"
+  >
+    <button class="cursor-pointer outline-none">close</button>
+  </form>
+</dialog>

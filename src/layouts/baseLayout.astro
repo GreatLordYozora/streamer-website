@@ -1,0 +1,89 @@
+---
+import Footer from "../components/layout/footer/footer.astro";
+import Header from "../components/layout/header/header.astro";
+
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = "Lorem ipsum",
+  description = "Lorem ipsum dolor sit amet.",
+  image = "/og-image.png",
+  canonical,
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = Astro.site;
+
+const canonicalURL = canonical
+  ? new URL(canonical, siteUrl)
+  : new URL(Astro.url.pathname, siteUrl);
+
+const imageURL = new URL(image, siteUrl);
+---
+
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta
+      name="robots"
+      content={noindex ? "noindex, nofollow" : "index, follow"}
+    />
+
+    <link rel="canonical" href={canonicalURL} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <meta name="theme-color" content="#000000" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Mi sitio" />
+    <meta property="og:image" content={imageURL} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
+    <meta name="generator" content={Astro.generator} />
+  </head>
+
+  <body
+    class="flex min-h-svh flex-col bg-base-100 text-base-content antialiased selection:bg-primary selection:text-base-100"
+  >
+    <div class="relative flex min-h-svh w-full flex-col overflow-x-clip">
+      <div
+        class="pointer-events-none fixed inset-0 z-0 bg-[linear-gradient(to_right,rgba(232,194,34,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(232,194,34,0.03)_1px,transparent_1px)] bg-size-[4rem_4rem]"
+        aria-hidden="true"
+      >
+      </div>
+
+      <Header />
+
+      <main
+        class="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8"
+      >
+        <slot />
+      </main>
+
+      <Footer />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+---
+export interface Link {
+  label: string;
+  url: string;
+}
+
+export interface Props {
+  links: Link[];
+}
+
+const { links } = Astro.props;
+---
+
+<div class="navbar-center hidden lg:flex">
+  <ul
+    class="menu menu-horizontal gap-1 px-1 font-mono text-xs font-bold uppercase tracking-wider"
+  >
+    {
+      links.map((link) => (
+        <li>
+          <a
+            href={link.url}
+            class="rounded-full border border-transparent px-4 py-2 text-base-content/80 transition-all duration-200 hover:border-primary/30 hover:bg-primary/10 hover:text-primary"
+          >
+            <span class="mr-0.5 text-primary/50" aria-hidden="true">
+              &gt;
+            </span>
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>

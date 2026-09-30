@@ -1,0 +1,150 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
+import {
+  footerData,
+  footerNavData,
+  footerSocialNavData,
+} from "../../../data/layout/footerData";
+import FooterNav from "./footerNav.astro";
+import FooterSocialNav from "./footerSocialNav.astro";
+
+const { avatar, brandName, companyHQ, description, dev, devUrl, mail } =
+  footerData;
+const mailUrl = `mailto:${mail}`;
+const currentYear = new Date().getFullYear();
+---
+
+<footer
+  class="relative w-full border-t border-primary/40 bg-base-300/90 px-6 pt-12 pb-6 font-mono text-base-content backdrop-blur-md md:px-8 lg:px-16"
+>
+  <span
+    class="absolute top-0 left-0 z-20 size-3 border-t-2 border-l-2 border-primary"
+    aria-hidden="true"></span>
+  <span
+    class="absolute top-0 right-0 z-20 size-3 border-t-2 border-r-2 border-secondary"
+    aria-hidden="true"></span>
+
+  <div
+    class="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.4)_51%)] bg-size-[100%_4px] opacity-20"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    class="footer relative z-10 mx-auto max-w-7xl gap-8 pb-8 sm:footer-horizontal"
+  >
+    <aside class="flex max-w-xs flex-col gap-3">
+      <div class="flex flex-row items-center gap-3">
+        <div class="relative size-12.5">
+          <Image
+            src={avatar}
+            alt={`Logotipo / Avatar de ${brandName}`}
+            width={50}
+            height={50}
+            class="size-12.5 rounded-full object-cover ring-2 ring-primary/60 shadow-[0_0_8px_rgba(232,194,34,0.3)] transition-all duration-300 group-hover:ring-primary"
+          />
+        </div>
+        <h2
+          class="text-xl font-extrabold uppercase tracking-widest text-primary drop-shadow-[0_0_5px_rgba(232,194,34,0.3)]"
+        >
+          {brandName}
+        </h2>
+      </div>
+      <p
+        class="border-l-2 border-primary/50 pl-3 text-xs leading-relaxed opacity-80"
+      >
+        {description}
+      </p>
+      <div class="mt-2">
+        <FooterSocialNav button={footerSocialNavData} />
+      </div>
+    </aside>
+
+    {footerNavData.map((nav) => <FooterNav {...nav} />)}
+
+    <nav aria-label="Contacto" class="flex flex-col gap-2">
+      <h3
+        class="footer-title font-mono uppercase tracking-wider text-secondary opacity-100"
+      >
+        [ CONTACTO ]
+      </h3>
+      <a
+        href={mailUrl}
+        class="link link-hover flex flex-row items-center gap-2 text-xs opacity-90 transition-colors hover:text-primary"
+      >
+        <Icon
+          name="miscellaneous/mail"
+          class="size-4 shrink-0 text-primary"
+          aria-hidden="true"
+        />
+        <span>{mail}</span>
+      </a>
+
+      <a
+        href="/contact?form=general"
+        class="link link-hover flex flex-row items-center gap-2 text-xs opacity-90 transition-colors hover:text-primary"
+      >
+        <Icon
+          name="miscellaneous/lightbulb"
+          class="size-4 shrink-0 text-primary"
+          aria-hidden="true"
+        />
+        <span>Sugerencias</span>
+      </a>
+      <a
+        href="/contact?form=collaboration"
+        class="link link-hover flex flex-row items-center gap-2 text-xs opacity-90 transition-colors hover:text-primary"
+      >
+        <Icon
+          name="miscellaneous/handshake"
+          class="size-4 shrink-0 text-primary"
+          aria-hidden="true"
+        />
+        <span>Colaboraciones</span>
+      </a>
+      <a
+        href="/contact?form=bussiness"
+        class="link link-hover flex flex-row items-center gap-2 text-xs opacity-90 transition-colors hover:text-primary"
+      >
+        <Icon
+          name="miscellaneous/briefcase-business"
+          class="size-4 shrink-0 text-primary"
+          aria-hidden="true"
+        />
+        <span>Patrocinio</span>
+      </a>
+
+      <p class="flex flex-row items-center gap-2 text-xs opacity-80">
+        <Icon
+          name="miscellaneous/map-pin"
+          class="size-4 shrink-0 text-secondary"
+          aria-hidden="true"
+        />
+        <span>{companyHQ}</span>
+      </p>
+    </nav>
+  </div>
+
+  <div
+    class="relative z-10 mx-auto my-4 h-px max-w-7xl bg-linear-to-r from-transparent via-primary/30 to-transparent"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    class="relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 font-mono text-[11px] opacity-70 sm:flex-row"
+  >
+    <p>&copy; {currentYear} {brandName}. ALL_RIGHTS_RESERVED.</p>
+    <p class="text-secondary">
+      Desarrollado por <a
+        href={devUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link link-hover font-bold transition-colors hover:text-primary"
+        >{dev}</a
+      >
+    </p>
+  </div>
+</footer>

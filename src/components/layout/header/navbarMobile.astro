@@ -1,0 +1,53 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Link {
+  label: string;
+  url: string;
+}
+
+export interface Props {
+  links: Link[];
+}
+
+const { links } = Astro.props;
+---
+
+<div class="navbar-end">
+  <div class="dropdown dropdown-end lg:hidden">
+    <button
+      type="button"
+      tabindex="0"
+      class="btn btn-circle btn-ghost text-primary hover:bg-primary/20"
+      aria-label="Abrir menú de navegación"
+    >
+      <Icon name="miscellaneous/menu" size={24} aria-hidden="true" />
+    </button>
+    <ul
+      tabindex="0"
+      class="menu dropdown-content z-50 mt-5 w-56 rounded-2xl border border-primary/40 bg-base-200/95 p-3 font-mono text-xs uppercase shadow-2xl backdrop-blur-lg"
+    >
+      <li
+        class="menu-title pb-1 text-[10px] tracking-widest text-secondary border-b border-primary/20"
+      >
+        // NAV_SYSTEM
+      </li>
+
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.url}
+              class="flex items-center gap-2 rounded-xl py-2.5 font-bold tracking-wider transition-colors hover:bg-primary/10 hover:text-primary"
+            >
+              <span class="font-bold text-primary" aria-hidden="true">
+                &gt;
+              </span>
+              <span>{link.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

@@ -1,17 +1,21 @@
 ---
-
+import BaseLayout from "../layouts/baseLayout.astro";
+import Hero from "../components/home/hero/hero.astro";
+import AboutMe from "../components/home/aboutMe/aboutMe.astro";
+import Featured from "../components/home/featured/featured.astro";
+import Links from "../components/home/links/links.astro";
+import Calendar from "../components/home/calendar/calendar.astro";
+import Discord from "../components/home/discord/discord.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Home | Lorem ipsum"
+  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+>
+  <Hero />
+  <AboutMe />
+  <Featured />
+  <Links />
+  <Calendar />
+  <Discord />
+</BaseLayout>

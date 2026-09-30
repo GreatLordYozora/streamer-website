@@ -1,0 +1,108 @@
+---
+import {
+  type CalendarEvent,
+  formatEventDate,
+} from "../../../data/home/calendarData";
+
+interface Props {
+  event: CalendarEvent;
+}
+
+const { event } = Astro.props;
+const formattedDate = formatEventDate(event.date);
+---
+
+<div
+  class="calendar-card-item group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-xs border border-primary/40 bg-base-200/90 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:shadow-[0_0_20px_rgba(232,194,34,0.3)]"
+  data-event-id={event.id}
+  data-event-title={event.title}
+  data-event-subtitle={event.subtitle}
+  data-event-description={event.description}
+  data-event-date={event.date}
+  data-event-formatted-date={formattedDate}
+  data-event-time={event.time}
+  data-event-type={event.type}
+  data-event-image={event.image || ""}
+  data-event-url={event.platformUrl || ""}
+  data-event-platform={event.platformName || "Plataforma"}
+  onclick="openEventModal(this)"
+  role="button"
+  tabindex="0"
+  aria-label={`Ver detalles de: ${event.title}`}
+>
+  <span
+    class="absolute top-0 left-0 z-20 size-2 border-t-2 border-l-2 border-primary transition-transform group-hover:scale-125"
+    aria-hidden="true"></span>
+  <span
+    class="absolute top-0 right-0 z-20 size-2 border-t-2 border-r-2 border-secondary transition-transform group-hover:scale-125"
+    aria-hidden="true"></span>
+
+  <figure class="relative m-0 aspect-video w-full overflow-hidden bg-base-300">
+    {
+      event.image ? (
+        <img
+          src={event.image}
+          alt={`Portada del evento ${event.title}`}
+          loading="lazy"
+          decoding="async"
+          class="size-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-100"
+        />
+      ) : (
+        <div
+          class="flex size-full items-center justify-center font-mono text-xs uppercase tracking-widest text-primary/60 bg-base-300/80"
+          aria-hidden="true"
+        >
+          [NO_SIGNAL_MEDIA]
+        </div>
+      )
+    }
+
+    <div
+      class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.5)_51%)] bg-size-[100%_4px] opacity-40"
+      aria-hidden="true"
+    >
+    </div>
+
+    <!-- Tipo de evento -->
+    <div class="absolute top-3 left-3 z-10">
+      <span
+        class="badge badge-neutral rounded-xs border border-secondary/50 px-3 py-2.5 font-mono text-[10px] uppercase tracking-widest text-secondary"
+      >
+        {event.type}
+      </span>
+    </div>
+
+    <!-- Hora del evento -->
+    <div class="absolute bottom-3 right-3 z-10">
+      <span
+        class="badge badge-neutral rounded-xs border border-primary/50 px-3 py-2.5 font-mono text-[10px] uppercase tracking-widest text-primary"
+      >
+        {event.time}
+      </span>
+    </div>
+  </figure>
+
+  <div class="flex flex-col justify-between space-y-4 p-4 grow">
+    <div class="space-y-1.5 border-l-2 border-primary/60 pl-3">
+      <h4
+        class="line-clamp-2 font-mono text-base font-extrabold uppercase leading-snug transition-colors group-hover:text-primary md:text-lg"
+      >
+        {event.title}
+      </h4>
+      <p class="line-clamp-2 font-mono text-xs leading-relaxed opacity-80">
+        {event.subtitle}
+      </p>
+    </div>
+
+    <div
+      class="mt-auto flex items-center justify-between border-t border-primary/20 pt-3 font-mono text-xs"
+    >
+      <span class="font-bold uppercase text-secondary">{formattedDate}</span>
+      <span
+        class="font-bold tracking-wider text-primary transition-transform group-hover:translate-x-1"
+      >
+        [DETALLE &rarr;]
+      </span>
+    </div>
+  </div>
+</div>

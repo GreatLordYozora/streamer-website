@@ -1,0 +1,26 @@
+---
+import { headerData } from "../../../data/layout/headerData";
+import NavbarLinks from "./navbarLinks.astro";
+import NavbarLogo from "./navbarLogo.astro";
+import NavbarMobile from "./navbarMobile.astro";
+
+const { avatar, creator, links } = headerData;
+---
+
+<header class="sticky top-4 z-50 w-full px-4">
+  <nav
+    class="navbar relative mx-auto flex min-h-16 max-w-3xl items-center justify-between rounded-full border border-primary/40 bg-base-100/80 px-4 py-2 font-mono shadow-[0_0_15px_rgba(232,194,34,0.15)] backdrop-blur-md"
+  >
+    <div
+      class="pointer-events-none absolute inset-0 z-0 rounded-full bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.3)_51%)] bg-size-[100%_4px] opacity-20"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="relative z-10 flex w-full items-center justify-between">
+      <NavbarLogo avatar={avatar} creator={creator} />
+      <NavbarLinks links={links} />
+      <NavbarMobile links={links} />
+    </div>
+  </nav>
+</header>
